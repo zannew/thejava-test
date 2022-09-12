@@ -16,6 +16,7 @@ import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -30,6 +31,9 @@ class StudyTest {
 
 	int value = 1;
 
+	@RegisterExtension
+	static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
+
 	// Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
 	@Order(2)
 	@Test
@@ -43,10 +47,10 @@ class StudyTest {
 
 	@Disabled
 	@Order(1)
-	@Test
-	// @DisplayName("스터디 생성 slow")
 	@SlowTest
-	void create_study_slow() {
+	@DisplayName("스터디 생성 slow")
+	void create_study_slow() throws InterruptedException {
+		Thread.sleep(1005L);
 		System.out.println(value++);
 		System.out.println("create study slow");
 	}
