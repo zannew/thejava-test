@@ -10,10 +10,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -26,11 +29,13 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
 	private int value = 1;
 
 	// Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
+	@Order(2)
 	@Test
 	@DisplayName("스터디 생성 fast")
 	@FastTest
@@ -40,6 +45,7 @@ class StudyTest {
 		assertThat(actual.getLimit()).isGreaterThan(0);
 	}
 
+	@Order(1)
 	@Test
 	@DisplayName("스터디 생성 slow")
 	@SlowTest
@@ -48,6 +54,7 @@ class StudyTest {
 		System.out.println("create study slow");
 	}
 
+	@Order(4)
 	@DisplayName("반복해서 테스트하기")
 	@RepeatedTest(value = 10, name = "{displayName}, {currentRepetition} / {totalRepetitions}")
 	void repeatTest(RepetitionInfo repetitionInfo) {
@@ -55,6 +62,7 @@ class StudyTest {
 			"repeat test! " + repetitionInfo.getCurrentRepetition() + " / " + repetitionInfo.getTotalRepetitions());
 	}
 
+	@Order(3)
 	@DisplayName("파라미터라이즈드 테스트하기")
 	@ParameterizedTest(name = "{index} - {displayName} message={0}")
 	@CsvSource({"10, '자바 스터디'", "20, '파이썬 스터디'"})
