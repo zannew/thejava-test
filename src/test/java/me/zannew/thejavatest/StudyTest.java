@@ -4,19 +4,21 @@ import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StudyTest {
 
     // Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
     @Test
-    void create1() {
+    @DisplayName("스터디 생성하기 1 \uD83D \uDE31")
+    void create_1() {
         Study study = new Study();
         assertNotNull(study);
         System.out.println("create1");
     }
 
     @Test
-    @Disabled
-    void create2() {
+    @DisplayName("스터디 생성하기 2")
+    void create_2() {
         Study study = new Study();
         assertNotNull(study);
         System.out.println("create2");
