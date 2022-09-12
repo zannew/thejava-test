@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -24,13 +25,17 @@ import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class StudyTest {
+
+	private int value = 1;
 
 	// Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
 	@Test
 	@DisplayName("스터디 생성 fast")
 	@FastTest
 	void create_study() {
+		System.out.println(value++);
 		Study actual = new Study(10);
 		assertThat(actual.getLimit()).isGreaterThan(0);
 	}
@@ -39,6 +44,7 @@ class StudyTest {
 	@DisplayName("스터디 생성 slow")
 	@SlowTest
 	void create_study_slow() {
+		System.out.println(value++);
 		System.out.println("create study slow");
 	}
 
@@ -51,8 +57,9 @@ class StudyTest {
 
 	@DisplayName("파라미터라이즈드 테스트하기")
 	@ParameterizedTest(name = "{index} - {displayName} message={0}")
-	@CsvSource({"10, '자바 스터디', 20, '파이썬 스터디'"})
+	@CsvSource({"10, '자바 스터디'", "20, '파이썬 스터디'"})
 	void parameterizedTest(@AggregateWith(StudyAggregator.class) Study study) {
+		System.out.println(value++);
 		System.out.println(study);
 	}
 
@@ -73,12 +80,12 @@ class StudyTest {
 	}
 
 	@BeforeAll
-	static void beforeAll() {
+	void beforeAll() {
 		System.out.println("before all");
 	}
 
 	@AfterAll
-	static void afterAll() {
+	void afterAll() {
 		System.out.println("after all");
 	}
 
