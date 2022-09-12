@@ -1,6 +1,7 @@
 package me.zannew.thejavatest;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -18,8 +19,21 @@ class StudyTest {
 	@Test
 	@DisplayName("스터디 생성하기")
 	void create_study() {
-		Study actual = new Study(10);
-		assertThat(actual.getLimit()).isGreaterThan(0);
+
+		String test_env = System.getenv("TEST_ENV");
+		System.out.println(test_env);
+		assumeTrue("LOCAL".equalsIgnoreCase(test_env));
+
+		assumingThat("LOCAL".equalsIgnoreCase(test_env), () -> {
+			Study actual = new Study(-10);
+			assertThat(actual.getLimit()).isGreaterThan(0);
+		});
+
+		assumingThat("ywchang".equalsIgnoreCase(test_env), () -> {
+			Study actual = new Study(10);
+			assertThat(actual.getLimit()).isGreaterThan(0);
+		});
+
 	}
 
 	@BeforeAll
