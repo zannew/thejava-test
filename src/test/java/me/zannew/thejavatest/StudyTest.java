@@ -1,6 +1,7 @@
 package me.zannew.thejavatest;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -13,6 +14,9 @@ import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -43,9 +47,17 @@ class StudyTest {
 
 	@DisplayName("파라미터라이즈드 테스트하기")
 	@ParameterizedTest(name = "{index} - {displayName} message={0}")
-	@ValueSource(strings = {"가을모기", "짱싫", "살려주세여", "흡혈모기"})
-	void parameterizedTest(String message) {
-		System.out.println(message);
+	@ValueSource(ints = {10, 20, 30})
+	void parameterizedTest(@ConvertWith(StudyConverter.class) Study study) {
+		System.out.println(study.getLimit());
+	}
+
+	static class StudyConverter extends SimpleArgumentConverter {
+		@Override
+		protected Object convert(Object source, Class<?> targetType) throws ArgumentConversionException {
+			assertEquals(Study.class, targetType, "Can only convert to Study");
+			return new Study(Integer.parseInt(source.toString()));
+		}
 	}
 
 	@BeforeAll
