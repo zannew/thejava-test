@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -18,7 +17,7 @@ class StudyTest {
 	// Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
 	@Test
 	@DisplayName("스터디 생성 fast")
-	@Tag("fast")
+	@FastTest
 	void create_study() {
 		Study actual = new Study(10);
 		assertThat(actual.getLimit()).isGreaterThan(0);
@@ -26,7 +25,7 @@ class StudyTest {
 
 	@Test
 	@DisplayName("스터디 생성 slow")
-	@Tag("slow")
+	@SlowTest
 	void create_study_slow() {
 		System.out.println("create study slow");
 	}
