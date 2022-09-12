@@ -2,6 +2,8 @@ package me.zannew.thejavatest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.Duration;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,9 +21,10 @@ class StudyTest {
 	@DisplayName("스터디 생성하기")
 	void create_study() {
 
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-			() -> new Study(-10));
-		assertEquals("limit 은 0보다 커야 한다.", exception.getMessage());
+		assertTimeout(Duration.ofMillis(100), () -> {
+			new Study(10);
+			Thread.sleep(300);
+		});
 	}
 
 	@BeforeAll
