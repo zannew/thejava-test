@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -15,7 +16,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,16 +28,15 @@ import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
-	private int value = 1;
+	int value = 1;
 
 	// Reflection 관련 : https://www.inflearn.com/course/the-java-code-manipulation 참고
 	@Order(2)
 	@Test
-	@DisplayName("스터디 생성 fast")
+	// @DisplayName("스터디 생성 fast")
 	@FastTest
 	void create_study() {
 		System.out.println(value++);
@@ -45,9 +44,10 @@ class StudyTest {
 		assertThat(actual.getLimit()).isGreaterThan(0);
 	}
 
+	@Disabled
 	@Order(1)
 	@Test
-	@DisplayName("스터디 생성 slow")
+	// @DisplayName("스터디 생성 slow")
 	@SlowTest
 	void create_study_slow() {
 		System.out.println(value++);
@@ -88,12 +88,12 @@ class StudyTest {
 	}
 
 	@BeforeAll
-	void beforeAll() {
+	static void beforeAll() {
 		System.out.println("before all");
 	}
 
 	@AfterAll
-	void afterAll() {
+	static void afterAll() {
 		System.out.println("after all");
 	}
 
