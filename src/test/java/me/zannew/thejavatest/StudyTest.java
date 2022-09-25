@@ -44,7 +44,7 @@ class StudyTest {
 	void create_study() {
 		System.out.println(value++);
 		Study actual = new Study(10);
-		assertThat(actual.getLimit()).isGreaterThan(0);
+		assertThat(actual.getLimitCount()).isGreaterThan(0);
 	}
 
 	@Disabled
