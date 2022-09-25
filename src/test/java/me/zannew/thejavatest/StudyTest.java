@@ -26,6 +26,8 @@ import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import me.zannew.thejavatest.domain.Study;
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
