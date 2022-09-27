@@ -1,5 +1,6 @@
 package me.zannew.thejavatest.study;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import me.zannew.thejavatest.domain.Member;
+import me.zannew.thejavatest.domain.Study;
 import me.zannew.thejavatest.member.MemberService;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +31,10 @@ class StudyServiceTest {
 		StudyRepository studyRepository = mock(StudyRepository.class);
 		StudyService studyService = new StudyService(memberService, studyRepository);
 		assertNotNull(studyService);
+
+		assertThat(memberService).isInstanceOf(MemberService.class);
+		assertThat(studyRepository).isInstanceOf(StudyRepository.class);
+		assertThat(studyService).isInstanceOf(StudyService.class);
 	}
 
 	@DisplayName("어노테이션 사용하여 mock 객체 생성하여 StudyService 인스턴스를 성공적으로 생성한다.")
@@ -118,5 +124,30 @@ class StudyServiceTest {
 			memberService.findById(2L);
 		});
 		assertEquals(Optional.empty(), memberService.findById(3L));
+	}
+
+	@DisplayName("Stubbing 연습 문제")
+	@Test
+	void exerciseStubbing() {
+
+		StudyService studyService = new StudyService(memberService, studyRepository);
+		assertNotNull(studyService);
+
+		Member member = new Member();
+		member.setId(1L);
+		member.setEmail("woni@woni.com");
+
+		Study study = new Study(10, "테스트");
+
+		// TODO memberService 객체에 findById 메서드를 1L 값으로 호출하면 member 객체를 리턴하도록 stubbing
+		when(memberService.findById(1L)).thenReturn(Optional.of(member));
+		// TODO studyRepository 객체에 save 메서드를 study 객체로 호출하면 study 객체 그래도 리턴하도록 stubbing
+		when(studyRepository.save(study)).thenReturn(study);
+
+		studyService.createNewStudy(1L, study);
+
+		assertNotNull(study.getOwner());
+		assertEquals(member, study.getOwner());
+
 	}
 }
