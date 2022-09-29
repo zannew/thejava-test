@@ -2,7 +2,7 @@ package me.zannew.thejavatest.study;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.Optional;
 
@@ -162,5 +162,30 @@ class StudyServiceTest {
 
 		inOrder.verify(memberService).notify(member);
 
+	}
+
+	@DisplayName("BDD 스타일 mockito API 적용")
+	@Test
+	void bddlikeTest() {
+		// Given
+		StudyService studyService = new StudyService(memberService, studyRepository);
+		assertNotNull(studyService);
+
+		Member member = new Member();
+		member.setId(1L);
+		member.setEmail("woni@woni.com");
+
+		Study study = new Study(10, "테스트");
+
+		given(memberService.findById(1L)).willReturn(Optional.of(member));
+		given(studyRepository.save(study)).willReturn(study);
+
+		// When
+		studyService.createNewStudy(1L, study);
+
+		// Then
+		assertEquals(member, study.getOwner());
+		then(memberService).should(times(1)).notify(study);
+		then(memberService).shouldHaveNoMoreInteractions();
 	}
 }
