@@ -13,6 +13,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import me.zannew.thejavatest.StudyStatus;
 import me.zannew.thejavatest.domain.Member;
 import me.zannew.thejavatest.domain.Study;
 import me.zannew.thejavatest.member.MemberService;
@@ -187,5 +188,34 @@ class StudyServiceTest {
 		assertEquals(member, study.getOwner());
 		then(memberService).should(times(1)).notify(study);
 		then(memberService).shouldHaveNoMoreInteractions();
+	}
+
+	@DisplayName("Mockito 연습 문제")
+	@Test
+	void exerciseMockito() {
+		// Given
+		StudyService studyService = new StudyService(memberService, studyRepository);
+		Study study = new Study(10, "TDD");
+		// TODO studyRepository Mock 객체의 save 메서드 호출시 study를 리턴하도록 만들기.
+		given(studyRepository.save(study)).willReturn(study);
+		/*
+		OR
+		when(studyRepository.save(study)).thenReturn(study);
+		 */
+
+		// When
+		studyService.openStudy(study);
+
+		// Then
+		// TODO study의 status가 OPENED로 변경됐는지 확인
+		assertEquals(study.getStatus(), StudyStatus.OPENED);
+		// TODO study의 openedDateTime이 null이 아닌지 확인
+		assertNotNull(study.getOpenedDateTime());
+		// TODO memberService의 notify(study)가 호출됐는지 확인
+		then(memberService).should(times(1)).notify(study);
+		/*
+		OR
+		verify(memberService, times(1)).notify(study);
+		 */
 	}
 }
