@@ -12,18 +12,23 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import me.zannew.thejavatest.StudyStatus;
 import me.zannew.thejavatest.domain.Member;
 import me.zannew.thejavatest.domain.Study;
 import me.zannew.thejavatest.member.MemberService;
 
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 class StudyServiceTest {
 
 	@Mock
 	MemberService memberService;
-	@Mock
+	@Autowired
 	StudyRepository studyRepository;
 
 	@DisplayName("mock 객체를 인자로 사용하여 StudyService 인스턴스를 성공적으로 생성한다.")
